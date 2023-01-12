@@ -49,7 +49,7 @@ It demonstrates how to post activities from the parent bot to the skill bot and 
   git clone https://github.com/dannygar/skillsBot.git
   ```
 
-- Clone the template appsettings.json files in both project directories [PersonalAssistantBot/appsettings.template.json](PersonalAssistantBot/appsettings.template.json) and [TravelAgentBot/appsettings.template.json](TravelAgentBot/appsettings.template.json) into corresponding `appsettings.json files
+- Clone the template appsettings.json files in both project directories [PersonalAssistantBot/appsettings.template.json](PersonalAssistantBot/appsettings.template.json) and [TravelAgentBot/appsettings.template.json](TravelAgentBot/appsettings.template.json) into corresponding `appsettings.json` files
 - Create a bot registration in the azure portal for the `TravelAgentBot` and update [TravelAgentBot/appsettings.json](TravelAgentBot/appsettings.json) with the AppId and password.
 - Create a bot registration in the azure portal for the PersonalAssistantBot and update [PersonalAssistantBot/appsettings.json](PersonalAssistantBot/appsettings.json) with the AppId and password. 
 - Update the BotFrameworkSkills section in [PersonalAssistantBot/appsettings.json](PersonalAssistantBot/appsettings.json) with the AppId for the skill you created in the previous step.
