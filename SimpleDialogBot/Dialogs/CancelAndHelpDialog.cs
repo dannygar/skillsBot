@@ -9,7 +9,7 @@ using Microsoft.Bot.Schema;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PersonalAssistanceBot.Dialogs
+namespace SimpleDialogBot.Dialogs
 {
     public class CancelAndHelpDialog : ComponentDialog
     {

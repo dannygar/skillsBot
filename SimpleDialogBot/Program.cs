@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace PersonalAssistanceBot
+namespace SimpleDialogBot
 {
     public class Program
     {

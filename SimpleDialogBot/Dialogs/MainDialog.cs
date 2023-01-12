@@ -9,9 +9,8 @@ using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
-using TravelAgentBot.DialogRootBot;
 
-namespace PersonalAssistanceBot.Dialogs
+namespace SimpleDialogBot.Dialogs
 {
     public class MainDialog : ComponentDialog
     {

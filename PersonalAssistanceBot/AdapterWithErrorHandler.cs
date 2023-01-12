@@ -11,7 +11,7 @@ using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
 using System;
 
-namespace PersonalAssistanceBot
+namespace PersonalAssistantBot
 {
     public class AdapterWithErrorHandler : CloudAdapter
     {

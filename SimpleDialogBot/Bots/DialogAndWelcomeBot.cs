@@ -14,7 +14,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PersonalAssistanceBot.Bots
+namespace SimpleDialogBot.Bots
 {
     public class DialogAndWelcomeBot<T> : DialogBot<T>
         where T : Dialog

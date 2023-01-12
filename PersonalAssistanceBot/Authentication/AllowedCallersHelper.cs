@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.Linq;
-using TravelAgentBot.DialogRootBot;
+using PersonalAssistantBot;
 
-namespace TravelAgentBot.Authentication
+namespace PersonalAssistantBot.Authentication
 {
     public static class AllowedCallersHelper
     {

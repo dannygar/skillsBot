@@ -12,12 +12,11 @@ using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using PersonalAssistanceBot.Bots;
-using PersonalAssistanceBot.Dialogs;
-using TravelAgentBot.Authentication;
-using TravelAgentBot.DialogRootBot;
+using PersonalAssistantBot.Bots;
+using PersonalAssistantBot.Dialogs;
+using PersonalAssistantBot.Authentication;
 
-namespace PersonalAssistanceBot
+namespace PersonalAssistantBot
 {
     public class Startup
     {

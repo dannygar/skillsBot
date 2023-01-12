@@ -9,16 +9,15 @@ using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
-using TravelAgentBot.DialogRootBot;
 
-namespace PersonalAssistanceBot.Dialogs
+namespace PersonalAssistantBot.Dialogs
 {
     public class MainDialog : ComponentDialog
     {
         private readonly ILogger _logger;
 
         // Dependency injection uses this constructor to instantiate MainDialog
-        public MainDialog(ILogger<MainDialog> logger)
+        public MainDialog(SkillsConfiguration skillsConfig, ILogger<MainDialog> logger)
             : base(nameof(MainDialog))
         {
             _logger = logger;
