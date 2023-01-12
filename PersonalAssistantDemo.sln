@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{09E72AFA-6A09-4614-8E52-5936E1B71BFE}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Personal Assistant Bot.bot = Personal Assistant Bot.bot
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelAgentBot", "TravelAgentBot\TravelAgentBot.csproj", "{47123A1B-BFD2-4020-B2D0-E61C48C73285}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalAssistantBot", "PersonalAssistanceBot\PersonalAssistantBot.csproj", "{B1B2291B-48E4-4E28-A0D4-7838570164C3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{47123A1B-BFD2-4020-B2D0-E61C48C73285}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47123A1B-BFD2-4020-B2D0-E61C48C73285}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47123A1B-BFD2-4020-B2D0-E61C48C73285}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47123A1B-BFD2-4020-B2D0-E61C48C73285}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1B2291B-48E4-4E28-A0D4-7838570164C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1B2291B-48E4-4E28-A0D4-7838570164C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1B2291B-48E4-4E28-A0D4-7838570164C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1B2291B-48E4-4E28-A0D4-7838570164C3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {383F2F9C-6179-4E15-8222-C5CD410D646E}
+	EndGlobalSection
+EndGlobal
