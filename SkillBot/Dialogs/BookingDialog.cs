@@ -1,12 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Samples.SkillBot.CLU;
 using Microsoft.Bot.Schema;
 using Microsoft.Recognizers.Text.DataTypes.TimexExpression;
+using Newtonsoft.Json;
 
 namespace Microsoft.Bot.Samples.SkillBot.Dialogs
 {
@@ -15,9 +18,12 @@ namespace Microsoft.Bot.Samples.SkillBot.Dialogs
         private const string DestinationStepMsgText = "Where would you like to travel to?";
         private const string OriginStepMsgText = "Where are you traveling from?";
 
-        public BookingDialog()
+        public BookingDialog(IBotTelemetryClient botTelemetryClient)
             : base(nameof(BookingDialog))
         {
+            // Set the telemetry client for this and all child dialogs
+            this.TelemetryClient = botTelemetryClient;
+
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new ConfirmPrompt(nameof(ConfirmPrompt)));
             AddDialog(new DateResolverDialog());
@@ -96,6 +102,16 @@ namespace Microsoft.Bot.Samples.SkillBot.Dialogs
             if ((bool)stepContext.Result)
             {
                 var bookingDetails = (BookingDetails)stepContext.Options;
+
+                // Send the booking details to the Telemetry
+                TelemetryClient.TrackEvent("Booking", new Dictionary<string, string>
+                {
+                    { "conversationId", stepContext.Context.Activity.Conversation.Id },
+                    { "origin", bookingDetails.Origin },
+                    { "destination", bookingDetails.Destination },
+                    { "travelDate", bookingDetails.TravelDate.ToString() }
+                });
+
 
                 return await stepContext.EndDialogAsync(bookingDetails, cancellationToken);
             }

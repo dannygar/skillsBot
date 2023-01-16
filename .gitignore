@@ -10,6 +10,7 @@
 *.userosscache
 *.sln.docstates
 *.bot
+*.zip
 appsettings.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)

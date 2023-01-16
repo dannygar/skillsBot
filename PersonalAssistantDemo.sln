@@ -10,11 +10,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleDialogBot", "SimpleDialogBot\SimpleDialogBot.csproj", "{6FD41073-2A20-4616-992D-98FBB6B06A43}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RootBot", "RootBot\RootBot.csproj", "{F5B3C10A-00D2-4D76-8365-51B872627BE3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkillBot", "SkillBot\SkillBot.csproj", "{64EE811B-5DA6-44B2-A61D-309AEF70875F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{939B2AC1-AF7F-4713-BD8D-4E8C26C5423F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkillBot", "Templates\SkillBot\SkillBot.csproj", "{C991EAAD-10E4-4CFC-9D6E-2B363A51CAC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,10 +24,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6FD41073-2A20-4616-992D-98FBB6B06A43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6FD41073-2A20-4616-992D-98FBB6B06A43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6FD41073-2A20-4616-992D-98FBB6B06A43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6FD41073-2A20-4616-992D-98FBB6B06A43}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F5B3C10A-00D2-4D76-8365-51B872627BE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F5B3C10A-00D2-4D76-8365-51B872627BE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5B3C10A-00D2-4D76-8365-51B872627BE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -34,9 +32,16 @@ Global
 		{64EE811B-5DA6-44B2-A61D-309AEF70875F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64EE811B-5DA6-44B2-A61D-309AEF70875F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64EE811B-5DA6-44B2-A61D-309AEF70875F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C991EAAD-10E4-4CFC-9D6E-2B363A51CAC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C991EAAD-10E4-4CFC-9D6E-2B363A51CAC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C991EAAD-10E4-4CFC-9D6E-2B363A51CAC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C991EAAD-10E4-4CFC-9D6E-2B363A51CAC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C991EAAD-10E4-4CFC-9D6E-2B363A51CAC9} = {939B2AC1-AF7F-4713-BD8D-4E8C26C5423F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {383F2F9C-6179-4E15-8222-C5CD410D646E}

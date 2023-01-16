@@ -23,7 +23,8 @@ namespace Microsoft.Bot.Samples.RootBot.Dialogs
         private const string SkillActionLogin = "Login";
         private const string SkillActionLogout = "Logout";
         private const string SkillActionShowToken = "Show Token";
-        private const string SkillActionTravelAgent = "Travel Agent";
+        private const string SkillBotId = "Travel Agent";
+        private const string SkillActionBookFlight = "Book Flight";
         private const string SkillActionGetWeather = "Get Weather";
         private const string SkillActionMessage = "Message";
 
@@ -108,7 +109,7 @@ namespace Microsoft.Bot.Samples.RootBot.Dialogs
         // This validator defaults to Message if the user doesn't select an existing option.
         private Task<bool> SkillActionPromptValidator(PromptValidatorContext<FoundChoice> promptContext, CancellationToken cancellationToken)
         {
-            if (!promptContext.Recognized.Succeeded)
+            if (!(promptContext.Recognized.Succeeded && promptContext.Recognized.Value.Score == 1))
             {
                 // Assume the user wants to send a message if an item in the list is not selected.
                 promptContext.Recognized.Value = new FoundChoice { Value = SkillActionMessage };
@@ -146,42 +147,11 @@ namespace Microsoft.Bot.Samples.RootBot.Dialogs
             {
                 Prompt = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput),
                 RetryPrompt = MessageFactory.Text(repromptMessageText, repromptMessageText, InputHints.ExpectingInput),
-                //Choices = await GetPromptChoicesAsync(stepContext, cancellationToken)
                 Choices = _skillsConfig.Skills.Select(skill => new Choice(skill.Value.Id)).ToList()
             };
 
             // Prompt the user to select a skill.
             return await stepContext.PromptAsync("ActionStepPrompt", options, cancellationToken);
-        }
-
-        // Creates the prompt choices based on the current sign in status
-        private async Task<List<Choice>> GetPromptChoicesAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            var promptChoices = new List<Choice>();
-            var userId = stepContext.Context.Activity?.From?.Id;
-            var userTokenClient = stepContext.Context.TurnState.Get<UserTokenClient>();
-
-            // Show different options if the user is signed in on the parent or not.
-            var token = await userTokenClient.GetUserTokenAsync(userId, _connectionName, stepContext.Context.Activity?.ChannelId, null, cancellationToken);
-            if (token == null)
-            {
-                // User is not signed in.
-                promptChoices.Add(new Choice("Login"));
-
-                // Token exchange will fail when the root is not logged on and the skill should 
-                // show a regular OAuthPrompt
-                //promptChoices.Add(new Choice("Call Skill (without SSO)"));
-            }
-            else
-            {
-                // User is signed in to the parent.
-                promptChoices.Add(new Choice("Logout from the root bot"));
-                promptChoices.Add(new Choice("Show token"));
-            }
-
-            promptChoices.AddRange(_skillsConfig.Skills.Select(skill => new Choice(skill.Value.Id)).ToList());
-
-            return promptChoices;
         }
 
 
@@ -221,15 +191,17 @@ namespace Microsoft.Bot.Samples.RootBot.Dialogs
             var choices = new List<Choice>();
             switch (skill.Id)
             {
+                case SkillBotId:
+                    choices.Add(new Choice(SkillActionBookFlight));
+                    choices.Add(new Choice(SkillActionGetWeather));
+                    break;
+
                 case "Login":
                     choices.Add(new Choice(SkillActionLogin));
                     choices.Add(new Choice(SkillActionLogout));
                     choices.Add(new Choice(SkillActionShowToken));
                     break;
-                case "SkillBot":
-                    choices.Add(new Choice(SkillActionTravelAgent));
-                    choices.Add(new Choice(SkillActionGetWeather));
-                    break;
+
             }
 
             return choices;
@@ -248,7 +220,7 @@ namespace Microsoft.Bot.Samples.RootBot.Dialogs
             switch (action)
             {
                 case SkillActionMessage:
-                case SkillActionTravelAgent:
+                case SkillActionBookFlight:
                 case SkillActionGetWeather:
                     return await CreateDialogSkillBotActivity(action, stepContext, cancellationToken);
 
@@ -344,6 +316,37 @@ namespace Microsoft.Bot.Samples.RootBot.Dialogs
             // Start the skillDialog instance with the arguments. 
             return await stepContext.BeginDialogAsync(selectedSkill.Id, new BeginSkillDialogOptions { Activity = beginSkillActivity }, cancellationToken);
         }
+
+
+        // Creates the prompt choices based on the current sign in status
+        //private async Task<List<Choice>> GetPromptChoicesAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        //{
+        //    var promptChoices = new List<Choice>();
+        //    var userId = stepContext.Context.Activity?.From?.Id;
+        //    var userTokenClient = stepContext.Context.TurnState.Get<UserTokenClient>();
+
+        //    // Show different options if the user is signed in on the parent or not.
+        //    var token = await userTokenClient.GetUserTokenAsync(userId, _connectionName, stepContext.Context.Activity?.ChannelId, null, cancellationToken);
+        //    if (token == null)
+        //    {
+        //        // User is not signed in.
+        //        promptChoices.Add(new Choice("Login"));
+
+        //        // Token exchange will fail when the root is not logged on and the skill should 
+        //        // show a regular OAuthPrompt
+        //        //promptChoices.Add(new Choice("Call Skill (without SSO)"));
+        //    }
+        //    else
+        //    {
+        //        // User is signed in to the parent.
+        //        promptChoices.Add(new Choice("Logout from the root bot"));
+        //        promptChoices.Add(new Choice("Show token"));
+        //    }
+
+        //    promptChoices.AddRange(_skillsConfig.Skills.Select(skill => new Choice(skill.Value.Id)).ToList());
+
+        //    return promptChoices;
+        //}
 
     }
 }

@@ -23,8 +23,8 @@ namespace Microsoft.Bot.Samples.SkillBot.Dialogs
     /// </summary>
     public class ActivityRouterDialog : ComponentDialog
     {
-        private const string SkillActionBookFlight = "Book Flight";
-        private const string SkillActionGetWeather = "Get Weather";
+        private const string SkillActionFirstIntent = "Book Flight";
+        private const string SkillActionSecondIntent = "Get Weather";
         private readonly CLURecognizer _cluRecognizer;
 
         public ActivityRouterDialog(IConfiguration configuration, CLURecognizer cluRecognizer, IBotTelemetryClient botTelemetryClient)
@@ -35,8 +35,7 @@ namespace Microsoft.Bot.Samples.SkillBot.Dialogs
             // Set the telemetry client for this and all child dialogs
             this.TelemetryClient = botTelemetryClient;
 
-            AddDialog(new SsoSkillDialog(configuration.GetSection("ConnectionName")?.Value, botTelemetryClient));
-            AddDialog(new BookingDialog(botTelemetryClient));
+            AddDialog(new SkillDialog(botTelemetryClient));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[] { ProcessActivityAsync }));
 
             // The initial child Dialog to run.
@@ -79,14 +78,11 @@ namespace Microsoft.Bot.Samples.SkillBot.Dialogs
             // Resolve what to execute based on the event name.
             switch (activity.Name)
             {
-                case SkillActionBookFlight:
-                    return await BeginBookFlight(stepContext, cancellationToken);
+                case SkillActionFirstIntent:
+                    return await BegingFirstIntentDialog(stepContext, cancellationToken);
 
-                case SkillActionGetWeather:
-                    return await BeginGetWeather(stepContext, cancellationToken);
-
-                case "SSO":
-                    return await stepContext.BeginDialogAsync(nameof(SsoSkillDialog), cancellationToken: cancellationToken);
+                case SkillActionSecondIntent:
+                    return await BeginSecondIntentDialog(stepContext, cancellationToken);
 
                 default:
                     // We didn't get an event name we can handle.
@@ -108,7 +104,7 @@ namespace Microsoft.Bot.Samples.SkillBot.Dialogs
             else
             {
                 // Call CLU with the utterance.
-                var cluResult = await _cluRecognizer.RecognizeAsync<FlightBooking>(stepContext.Context, cancellationToken);
+                var cluResult = await _cluRecognizer.RecognizeAsync<SkillModel>(stepContext.Context, cancellationToken);
 
                 // Create a message showing the CLU results.
                 var sb = new StringBuilder();
@@ -131,12 +127,12 @@ namespace Microsoft.Bot.Samples.SkillBot.Dialogs
                 // Start a dialog if we recognize the intent.
                 switch (cluResult.TopIntent().intent)
                 {
-                    case FlightBooking.Intent.BookFlight:
+                    case SkillModel.Intent.FirstIntent:
                         stepContext.Context.Activity.Value = ParseEntities(cluResult.Entities).Item1;
-                        return await BeginBookFlight(stepContext, cancellationToken);
+                        return await BegingFirstIntentDialog(stepContext, cancellationToken);
 
-                    case FlightBooking.Intent.GetWeather:
-                        return await BeginGetWeather(stepContext, cancellationToken);
+                    case SkillModel.Intent.SecondIntent:
+                        return await BeginSecondIntentDialog(stepContext, cancellationToken);
 
                     default:
                         // Catch all for unhandled intents.
@@ -150,33 +146,28 @@ namespace Microsoft.Bot.Samples.SkillBot.Dialogs
             return new DialogTurnResult(DialogTurnStatus.Complete);
         }
 
-        private static async Task<DialogTurnResult> BeginGetWeather(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private static async Task<DialogTurnResult> BeginSecondIntentDialog(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var activity = stepContext.Context.Activity;
-            var location = new Location();
-            if (activity.Value != null)
-            {
-                location = JsonConvert.DeserializeObject<Location>(JsonConvert.SerializeObject(activity.Value));
-            }
 
-            // We haven't implemented the GetWeatherDialog so we just display a TODO message.
-            var getWeatherMessageText = $"It's always sunny here in Florida! (lat: {location.Latitude}, long: {location.Longitude}";
-            var getWeatherMessage = MessageFactory.Text(getWeatherMessageText, getWeatherMessageText, InputHints.IgnoringInput);
-            await stepContext.Context.SendActivityAsync(getWeatherMessage, cancellationToken);
+            // We haven't implemented the Second Intent so we just display a TODO message.
+            var secondIntentMessageText = $"TODO: Implement Second Intent for this skill";
+            var secondIntentMessage = MessageFactory.Text(secondIntentMessageText, secondIntentMessageText, InputHints.IgnoringInput);
+            await stepContext.Context.SendActivityAsync(secondIntentMessage, cancellationToken);
             return new DialogTurnResult(DialogTurnStatus.Complete);
         }
 
-        private async Task<DialogTurnResult> BeginBookFlight(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private async Task<DialogTurnResult> BegingFirstIntentDialog(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var activity = stepContext.Context.Activity;
-            var bookingDetails = new BookingDetails();
+            var bookingDetails = new SkillDetails();
             if (activity.Value != null)
             {
-                bookingDetails = JsonConvert.DeserializeObject<BookingDetails>(JsonConvert.SerializeObject(activity.Value));
+                bookingDetails = JsonConvert.DeserializeObject<SkillDetails>(JsonConvert.SerializeObject(activity.Value));
             }
 
             // Start the booking dialog.
-            var bookingDialog = FindDialog(nameof(BookingDialog));
+            var bookingDialog = FindDialog(nameof(SkillDialog));
             return await stepContext.BeginDialogAsync(bookingDialog.Id, bookingDetails, cancellationToken);
         }
 
@@ -184,9 +175,9 @@ namespace Microsoft.Bot.Samples.SkillBot.Dialogs
         private string GetObjectAsJsonString(object value) => value == null ? string.Empty : JsonConvert.SerializeObject(value);
 
 
-        private (JObject, string) ParseEntities(List<FlightBooking.Entity> entities)
+        private (JObject, string) ParseEntities(List<SkillModel.Entity> entities)
         {
-            var categories = new Dictionary<string, FlightBooking.Entity>();
+            var categories = new Dictionary<string, SkillModel.Entity>();
             foreach (var entity in entities)
             {
                 if (!categories.ContainsKey(entity.Category))

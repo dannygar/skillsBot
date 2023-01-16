@@ -17,7 +17,7 @@ namespace Microsoft.Bot.Samples.SkillBot.Dialogs
     {
         private readonly string _connectionName;
 
-        public SsoSkillDialog(string connectionName)
+        public SsoSkillDialog(string connectionName, IBotTelemetryClient botTelemetryClient)
             : base(nameof(SsoSkillDialog))
         {
             _connectionName = connectionName;
@@ -25,6 +25,9 @@ namespace Microsoft.Bot.Samples.SkillBot.Dialogs
             {
                 throw new ArgumentException("\"ConnectionName\" is not set in configuration");
             }
+
+            // Set the telemetry client for this and all child dialogs
+            this.TelemetryClient = botTelemetryClient;
 
             AddDialog(new SsoSkillSignInDialog(_connectionName));
             AddDialog(new ChoicePrompt("ActionStepPrompt"));

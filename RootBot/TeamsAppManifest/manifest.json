@@ -1,0 +1,66 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.15/MicrosoftTeams.schema.json",
+  "version": "1.0.0",
+  "manifestVersion": "1.15",
+  "id": "35caf743-5183-4cb8-b0dc-5a6276bcee75",
+  "packageName": "com.teams.sample.skillbot",
+  "developer": {
+    "name": "Microsoft",
+    "websiteUrl": "https://www.microsoft.com",
+    "privacyUrl": "https://www.teams.com/privacy",
+    "termsOfUseUrl": "https://www.teams.com/termsofuser"
+  },
+  "icons": {
+    "outline": "icon-outline.png",
+    "color": "icon-color.png"
+  },
+  "name": {
+    "short": "SkillBot",
+    "full": "TeamsSkillBot"
+  },
+  "description": {
+    "short": "Skill Bot",
+    "full": "Skill Bot Demo"
+  },
+  "accentColor": "#FFFFFF",
+  "bots": [
+    {
+      "botId": "35caf743-5183-4cb8-b0dc-5a6276bcee75",
+      "scopes": [
+        "personal",
+        "groupchat",
+        "team"
+      ],
+      "supportsFiles": false,
+      "isNotificationOnly": false,
+      "commandLists": [
+        {
+          "scopes": [
+            "personal",
+            "groupchat",
+            "team"
+          ],
+          "commands": [
+            {
+              "title": "Travel Agent",
+              "description": "Send a request to book a flight"
+            },
+            {
+              "title": "Show Welcome",
+              "description": "Shows the welcome card"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "permissions": [
+    "identity",
+    "messageTeamMembers"
+  ],
+  "webApplicationInfo": {
+    "id": "35caf743-5183-4cb8-b0dc-5a6276bcee75",
+    "resource": "api://35caf743-5183-4cb8-b0dc-5a6276bcee75"
+  },
+  "validDomains": []
+}

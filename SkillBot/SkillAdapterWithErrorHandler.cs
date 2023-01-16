@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
+using Microsoft.Bot.Builder.Integration.ApplicationInsights.Core;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Builder.TraceExtensions;
 using Microsoft.Bot.Connector.Authentication;
@@ -22,14 +24,27 @@ namespace Microsoft.Bot.Samples.SkillBot
     /// <see cref="SendActivitiesAsync"/> to save the state of the conversation when a OAuthPrompt is sent to the parent.
     /// This prepares the bot to receive the activity send by the TokenExchangeSkillHandler.
     /// </remarks>
-    public class SsoSkillAdapterWithErrorHandler : CloudAdapter
+    public class SkillAdapterWithErrorHandler : CloudAdapter
     {
         private readonly ConversationState _conversationState;
         private readonly ILogger _logger;
+        //Create field for telemetry client. Add IBotTelemetryClient parameter to AdapterWithErrorHandler
+        private IBotTelemetryClient _adapterBotTelemetryClient;
 
-        public SsoSkillAdapterWithErrorHandler(BotFrameworkAuthentication auth, ConversationState conversationState, ILogger<IBotFrameworkHttpAdapter> logger)
+
+        public SkillAdapterWithErrorHandler(
+            BotFrameworkAuthentication auth, 
+            ConversationState conversationState,
+            TelemetryInitializerMiddleware telemetryInitializerMiddleware,
+            IBotTelemetryClient botTelemetryClient,
+            ILogger<IBotFrameworkHttpAdapter> logger)
             : base(auth, logger)
         {
+            Use(telemetryInitializerMiddleware);
+
+            //Use telemetry client so that we can trace exceptions into Application Insights
+            _adapterBotTelemetryClient = botTelemetryClient;
+
             _conversationState = conversationState ?? throw new ArgumentNullException(nameof(conversationState));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             OnTurnError = HandleTurnError;
@@ -53,6 +68,14 @@ namespace Microsoft.Bot.Samples.SkillBot
 
         private async Task HandleTurnError(ITurnContext turnContext, Exception exception)
         {
+            // Track exceptions into Application Insights
+            // Set up some properties for our exception tracing to give more information
+            var properties = new Dictionary<string, string>
+                { { "Bot exception caught in", $"{nameof(SkillAdapterWithErrorHandler)} - {nameof(OnTurnError)}" } };
+
+            //Send the exception telemetry:
+            _adapterBotTelemetryClient.TrackException(exception, properties);
+
             // Log any leaked exception from the application.
             _logger.LogError(exception, $"[OnTurnError] unhandled error : {exception.Message}");
 
